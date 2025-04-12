@@ -27,11 +27,11 @@ public class CartaoService {
     public CartaoDTO cadastrarCartao(CartaoEntity cartaoEntity) {
         String numeroCartao = String.format("%06d", new Random().nextInt(1000000));
         cartaoEntity.setNumero(numeroCartao);
+        
+        UsuarioEntity usuario = this.usuariosRepository.findById(cartaoEntity.getIdUsuario())
+        .orElseThrow(() -> new UserNotFoundException());
+        
         CartaoEntity cartao = this.cartaoRepository.save(cartaoEntity);
-
-        UsuarioEntity usuario = this.usuariosRepository.findById(cartao.getIdUsuario())
-                .orElseThrow(() -> new UserNotFoundException());
-
         return new CartaoDTO(cartao, usuario.getNome());
     }
 

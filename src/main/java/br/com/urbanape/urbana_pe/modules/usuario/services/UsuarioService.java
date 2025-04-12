@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.urbanape.urbana_pe.exceptions.UserFoundException;
@@ -19,11 +20,17 @@ public class UsuarioService {
     @Autowired
     UsuariosRepository usuariosRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     public UsuarioDTO cadastrarUsuario(UsuarioEntity usuarioEntity){
         this.usuariosRepository.findByEmail(usuarioEntity.getEmail())
         .ifPresent((user) -> {
             throw new UserFoundException();
         });
+
+        var senha = passwordEncoder.encode(usuarioEntity.getSenha());
+        usuarioEntity.setSenha(senha);
 
         UsuarioEntity usuario = this.usuariosRepository.save(usuarioEntity);
         return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail());
@@ -51,8 +58,12 @@ public class UsuarioService {
             usuario.setEmail(updateUsuarioDTO.getEmail());
         }
 
-        if(updateUsuarioDTO.getSenha() != null && !updateUsuarioDTO.getSenha().equals(usuario.getSenha())){
-            usuario.setSenha(updateUsuarioDTO.getSenha());
+        if(updateUsuarioDTO.getSenha() != null){
+            var senhaIgual = this.passwordEncoder.matches(updateUsuarioDTO.getSenha(), usuario.getSenha());
+            if(!senhaIgual){
+                var senha = passwordEncoder.encode(updateUsuarioDTO.getSenha());
+                usuario.setSenha(senha);
+            }
         }
 
         UsuarioEntity usuarioAtualizado = this.usuariosRepository.save(usuario);
