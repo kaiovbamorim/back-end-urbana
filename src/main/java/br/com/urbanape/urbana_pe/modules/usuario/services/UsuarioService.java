@@ -33,7 +33,7 @@ public class UsuarioService {
         usuarioEntity.setSenha(senha);
 
         UsuarioEntity usuario = this.usuariosRepository.save(usuarioEntity);
-        return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail());
+        return new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getTipo());
     }
     
     public List<UsuarioDTO> buscarUsuarios(){
@@ -41,7 +41,8 @@ public class UsuarioService {
         return usuarios.stream().map(usuario -> new UsuarioDTO(
             usuario.getId(), 
             usuario.getNome(), 
-            usuario.getEmail()
+            usuario.getEmail(),
+            usuario.getTipo()
             )).toList();
     }
 
@@ -67,7 +68,7 @@ public class UsuarioService {
         }
 
         UsuarioEntity usuarioAtualizado = this.usuariosRepository.save(usuario);
-        return new UsuarioDTO(usuarioAtualizado.getId(), usuarioAtualizado.getNome(), usuarioAtualizado.getEmail());
+        return new UsuarioDTO(usuarioAtualizado.getId(), usuarioAtualizado.getNome(), usuarioAtualizado.getEmail(), usuarioAtualizado.getTipo());
     }
 
     public void deletarUsuario(String idUsuario){

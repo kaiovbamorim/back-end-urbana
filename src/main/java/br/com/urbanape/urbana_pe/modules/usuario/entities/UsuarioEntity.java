@@ -6,15 +6,19 @@ import java.util.UUID;
 import org.hibernate.validator.constraints.Length;
 
 import br.com.urbanape.urbana_pe.modules.cartao.entities.CartaoEntity;
+import br.com.urbanape.urbana_pe.modules.usuario.enums.TipoUsuario;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity(name = "usuario")
 public class UsuarioEntity {
@@ -36,6 +40,11 @@ public class UsuarioEntity {
     @Length(min = 5, message = "A senha deve ter no mínimo 5 caracteres")
     @Column(nullable = false)
     private String senha;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, unique = false)
+    @NotNull(message = "O campo TIPO deve ser preenchido!")
+    private TipoUsuario tipo;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
     private List<CartaoEntity> cartao;
@@ -66,5 +75,13 @@ public class UsuarioEntity {
 
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public void setTipo(TipoUsuario tipo) {
+        this.tipo = tipo;
+    }
+
+    public TipoUsuario getTipo() {
+        return tipo;
     }
 }

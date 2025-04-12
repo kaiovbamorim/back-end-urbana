@@ -47,12 +47,12 @@ public class AuthUsuarioService {
 
         var token = JWT.create().withIssuer("urbanape")
         .withSubject(usuario.getId().toString())
-        .withClaim("roles", Arrays.asList("ADMIN"))
+        .withClaim("roles", Arrays.asList(usuario.getTipo().getNome()))
         .withExpiresAt(expiredAt)
         .sign(hash);
 
 
-        UsuarioDTO usuarioDTO =  new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail());
+        UsuarioDTO usuarioDTO =  new UsuarioDTO(usuario.getId(), usuario.getNome(), usuario.getEmail(), usuario.getTipo());
         AuthUsuarioResponseDTO auhtUsuarioResponse =  new AuthUsuarioResponseDTO(token, usuarioDTO);
         return auhtUsuarioResponse;
     }
