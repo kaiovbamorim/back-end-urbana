@@ -43,7 +43,7 @@ public class AuthUsuarioService {
         }
 
         Algorithm hash = Algorithm.HMAC256(secretHash);
-        var expiredAt = Instant.now().plus(Duration.ofHours(1));
+        var expiredAt = Instant.now().plus(Duration.ofHours(5));
 
         var token = JWT.create().withIssuer("urbanape")
         .withSubject(usuario.getId().toString())

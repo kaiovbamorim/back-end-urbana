@@ -31,13 +31,4 @@ public class ExceptionHandlerController {
 
         return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
     }
-    
-    @ExceptionHandler(UserFoundException.class)
-    public ResponseEntity<List<ErrorMessageDTO>> handleUserFoundException(UserFoundException e){
-        List<ErrorMessageDTO> dto = new ArrayList<>();
-        ErrorMessageDTO erro = new ErrorMessageDTO(e.getMessage(), "email");
-        dto.add(erro);
-
-        return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
-    }
 }

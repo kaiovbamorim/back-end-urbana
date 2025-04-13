@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.urbanape.urbana_pe.modules.cartao.entities.CartaoEntity;
 import br.com.urbanape.urbana_pe.modules.cartao.services.CartaoService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -26,6 +27,17 @@ public class CartaoController {
     public ResponseEntity<Object> cadastrarCartao(@Valid @RequestBody CartaoEntity cartaoEntity){
         try {
             var result = cartaoService.cadastrarCartao(cartaoEntity);
+            return ResponseEntity.ok().body(result);
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/meus-cartoes")
+    public ResponseEntity<Object> buscarMeusCartoes(HttpServletRequest request){
+        try {
+            var idUsuario = request.getAttribute("idUsuario");
+            var result = this.cartaoService.buscarMeusCartoes(idUsuario.toString());
             return ResponseEntity.ok().body(result);
         } catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());

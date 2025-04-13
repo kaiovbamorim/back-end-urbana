@@ -35,6 +35,18 @@ public class CartaoService {
         return new CartaoDTO(cartao, usuario.getNome());
     }
 
+    public List<CartaoEntity> buscarMeusCartoes(String idUsuario) {
+
+        final UUID id = UUID.fromString(idUsuario);
+
+        this.usuariosRepository.findById(id)
+        .orElseThrow(() -> new UserNotFoundException());
+
+        List<CartaoEntity> cartoes = this.cartaoRepository.findByIdUsuario(id);
+
+        return cartoes;
+    }
+
     public List<CartaoDTO> buscarCartoes() {
         List<CartaoDTO> cartaoDto = new ArrayList<>();
         List<CartaoEntity> cartoes = this.cartaoRepository.findAll();
