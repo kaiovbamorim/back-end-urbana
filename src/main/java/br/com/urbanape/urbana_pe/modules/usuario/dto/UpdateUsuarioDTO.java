@@ -4,8 +4,13 @@ import java.util.UUID;
 
 import org.hibernate.validator.constraints.Length;
 
+import br.com.urbanape.urbana_pe.modules.usuario.enums.TipoUsuario;
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class UpdateUsuarioDTO {
 
@@ -21,14 +26,19 @@ public class UpdateUsuarioDTO {
     @Length(min = 5, message = "A senha deve ter no mínimo 5 caracteres")
     private String senha;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "O campo TIPO deve ser preenchido!")
+    private TipoUsuario tipo;
+
     public String getNome() {
         return nome;
     }
     
-    public UpdateUsuarioDTO(UUID id, String nome, String email, String senha){
+    public UpdateUsuarioDTO(UUID id, String nome, String email, TipoUsuario tipo, String senha){
         this.id = id;
         this.nome = nome;
         this.email = email;
+        this.tipo = tipo;
         this.senha = senha;
     }
 
@@ -54,5 +64,12 @@ public class UpdateUsuarioDTO {
 
     public UUID getId(){
         return this.id;
+    }
+
+    public TipoUsuario getTipo() {
+        return tipo;
+    }
+    public void setTipo(TipoUsuario tipo) {
+        this.tipo = tipo;
     }
 }

@@ -59,6 +59,10 @@ public class UsuarioService {
             usuario.setEmail(updateUsuarioDTO.getEmail());
         }
 
+        if(updateUsuarioDTO.getTipo() != null && !updateUsuarioDTO.getTipo().equals(usuario.getTipo())){
+            usuario.setTipo(updateUsuarioDTO.getTipo());
+        }
+
         if(updateUsuarioDTO.getSenha() != null){
             var senhaIgual = this.passwordEncoder.matches(updateUsuarioDTO.getSenha(), usuario.getSenha());
             if(!senhaIgual){
