@@ -22,7 +22,9 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
+        http
+        .cors(cors -> {})
+        .csrf(csrf -> csrf.disable())
         .authorizeHttpRequests(auth -> {
             auth.requestMatchers("/usuario/**").permitAll()
                 .requestMatchers("/cartao/**").permitAll()
@@ -34,16 +36,13 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Value("${cors.allowed-origins}")
-    private String allowedOrigins;
-
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(allowedOrigins.split(","))
+                        .allowedOrigins("http://localhost:4200")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
