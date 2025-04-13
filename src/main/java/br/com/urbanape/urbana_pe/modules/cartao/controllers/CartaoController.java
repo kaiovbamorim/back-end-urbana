@@ -2,6 +2,7 @@ package br.com.urbanape.urbana_pe.modules.cartao.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ public class CartaoController {
     private CartaoService cartaoService;
 
     @PostMapping("/cadastrar")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> cadastrarCartao(@Valid @RequestBody CartaoEntity cartaoEntity){
         try {
             var result = cartaoService.cadastrarCartao(cartaoEntity);
@@ -45,6 +47,7 @@ public class CartaoController {
     }
 
     @GetMapping("/todos-cartoes")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> buscarCartoes(){
         try {
             var result = this.cartaoService.buscarCartoes();
@@ -55,6 +58,7 @@ public class CartaoController {
     }
 
     @PutMapping("/alterar-status/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> alterarStatus(@PathVariable("id") String idCartao){
         try {
             var result = this.cartaoService.alterarStatus(idCartao);
@@ -65,6 +69,7 @@ public class CartaoController {
     }
 
     @DeleteMapping("/excluir/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> deletarCartao(@PathVariable("id") String idCartao){
         try {
             this.cartaoService.deletarCartao(idCartao);

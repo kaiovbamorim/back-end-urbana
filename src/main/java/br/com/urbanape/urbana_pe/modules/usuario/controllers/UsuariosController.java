@@ -2,6 +2,7 @@ package br.com.urbanape.urbana_pe.modules.usuario.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class UsuariosController {
     private UsuarioService usuarioService;
     
     @PostMapping("/cadastrar")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> cadastrarUsuario(@Valid @RequestBody UsuarioEntity usuarioEntity){
         try {
             var result = this.usuarioService.cadastrarUsuario(usuarioEntity);
@@ -39,6 +41,7 @@ public class UsuariosController {
     }
 
     @GetMapping("/todos-usuarios")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> buscarUsuarios(){
         try {
             var result = this.usuarioService.buscarUsuarios();
@@ -49,6 +52,7 @@ public class UsuariosController {
     }
 
     @PutMapping("/editar")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> editarUsuario(@Valid @RequestBody UpdateUsuarioDTO updateUsuarioDTO){
         try {
             var result = this.usuarioService.editarUsuario(updateUsuarioDTO);
@@ -59,6 +63,7 @@ public class UsuariosController {
     }
     
     @DeleteMapping("/excluir/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Object> deletarUsuario(@PathVariable("id") String idUsuario){
         try {
             this.usuarioService.deletarUsuario(idUsuario);
